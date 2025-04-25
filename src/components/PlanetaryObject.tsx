@@ -272,6 +272,8 @@ const PlanetaryObject = forwardRef<THREE.Mesh, PlanetaryObjectProps>(
         {type === "star" ? (
           <meshBasicMaterial
             map={finalTextures.map || undefined}
+            // Add color prop to increase brightness, similar to web version
+            color={new THREE.Color(2.5, 2.5, 2.5)}
             transparent={false} // Explicitly set non-transparent
             toneMapped={false} // Disable tone mapping for basic material
           />

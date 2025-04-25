@@ -1,6 +1,7 @@
 import React, { useRef } from "react"; // Import useRef
 import { useFrame, useThree } from "@react-three/fiber/native";
 import { THREE } from "expo-three"; // 替换 three 为 expo-three
+import { useTexture } from "@react-three/drei/native"; // Import useTexture
 
 // Import PlanetaryObject component and planet data
 import PlanetaryObject, { PlanetData } from "./PlanetaryObject";
@@ -41,6 +42,22 @@ const AnimatedSystem = ({
 
   // Refs for moon orbits around planets
   const moonOrbitRefs = React.useRef<{ [key: string]: THREE.Group | null }>({});
+
+  // Load glow texture for the Sun (assuming 'assets/textures/glow.png' exists)
+  // Note: Error handling for texture loading is omitted for brevity.
+  // If the texture doesn't load, the sprite won't render.
+  let glowTexture: THREE.Texture | null = null;
+  try {
+    // It's safer to load textures conditionally or handle errors,
+    // but for this example, we'll assume it loads.
+    // useTexture needs to be called unconditionally at the top level.
+    const loadedGlowTexture = useTexture("assets/textures/glow.png");
+    if (loadedGlowTexture) {
+      glowTexture = loadedGlowTexture;
+    }
+  } catch (e) {
+    console.warn("Could not load glow texture 'assets/textures/glow.png':", e);
+  }
 
   // Type assertion for the imported JSON data
   const allPlanetData = allPlanetDataJson as PlanetData[];
@@ -103,6 +120,15 @@ const AnimatedSystem = ({
     });
   });
 
+  // Calculate normalized radius for sun to scale the glow sprite
+  const sunNormalizedRadius = sunData ? normalizeRadius(sunData.radius) : 0.1; // Use the same normalization as PlanetaryObject
+  const glowScaleFactor = 6; // Adjust this factor to control glow size
+  const glowScale: [number, number, number] = [
+    sunNormalizedRadius * glowScaleFactor,
+    sunNormalizedRadius * glowScaleFactor,
+    1, // Scale for sprite is 2D
+  ];
+
   return (
     <>
       {/* Sun */}
@@ -112,6 +138,19 @@ const AnimatedSystem = ({
         position={[0, 0, 0]}
         // brightness={brightness} // Remove passing brightness to Sun
       />
+      {/* Sun Glow Sprite - Renders only if glowTexture loaded successfully */}
+      {glowTexture && sunData && (
+        <sprite position={[0, 0, 0]} scale={glowScale}>
+          <spriteMaterial
+            map={glowTexture}
+            blending={THREE.AdditiveBlending} // Make it additive for glow effect
+            transparent={true}
+            depthWrite={false} // Don't block objects behind it
+            opacity={0.75} // Adjust opacity for desired intensity
+            color={0xffffcc} // Tint the glow slightly yellowish
+          />
+        </sprite>
+      )}
 
       {/* Planets, Moons, Rings */}
       {allPlanetData

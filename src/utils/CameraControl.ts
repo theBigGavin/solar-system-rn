@@ -25,6 +25,8 @@ const CameraController = ({
   const desiredCameraPosition = useRef(new THREE.Vector3()); // Where the camera should move to
   const isFocusing = useRef(false); // Is the focus/unfocus animation running?
   const wasFocused = useRef(false); // Was a target previously selected?
+  const prevTargetRotationY = useRef<number>(0); // Store previous target rotation for follow effect
+  const followRotationFactor = 0.05; // How much the camera follows rotation (adjust as needed)
 
   // Effect to trigger focus/unfocus animation when targetName changes
   useEffect(() => {
@@ -46,6 +48,8 @@ const CameraController = ({
         isFocusing.current = true; // Start focusing animation
         wasFocused.current = true;
         controls.enabled = false; // Disable controls during animation
+        // Initialize prev rotation when focus starts
+        prevTargetRotationY.current = targetMesh.rotation.y;
       }
     } else if (wasFocused.current) {
       // If target is removed and we were focused, start unfocusing
@@ -83,14 +87,46 @@ const CameraController = ({
           wasFocused.current = false; // Mark unfocus as complete
         }
         controls.update(); // Update one last time with precise values
+        // Reset prev rotation when unfocus animation completes
+        if (!targetName) {
+          prevTargetRotationY.current = 0;
+        }
       }
     } else if (targetName) {
       // --- Maintain Focus (Animation Complete) ---
       const targetMesh = meshRefs.current[targetName];
       if (targetMesh) {
-        // Continuously update the controls' target to the moving planet's position
+        // 1. Update controls target
         targetMesh.getWorldPosition(controls.target);
-        controls.update(); // Allow user input (zoom/rotate around target)
+
+        // 2. Calculate rotation delta
+        const currentTargetRotationY = targetMesh.rotation.y;
+        let deltaRotationY = currentTargetRotationY - prevTargetRotationY.current;
+
+        // Handle rotation wrap-around (+/- 2*PI)
+        const twoPi = Math.PI * 2;
+        if (deltaRotationY > Math.PI) {
+          deltaRotationY -= twoPi;
+        } else if (deltaRotationY < -Math.PI) {
+          deltaRotationY += twoPi;
+        }
+
+        // 3. Apply partial rotation to camera position if delta is significant
+        if (Math.abs(deltaRotationY) > 0.0001) { // Avoid tiny adjustments
+          const relativeCamPos = camera.position.clone().sub(controls.target);
+          const rotationQuaternion = new THREE.Quaternion().setFromAxisAngle(
+            new THREE.Vector3(0, 1, 0), // Rotate around world Y-axis
+            deltaRotationY * followRotationFactor
+          );
+          relativeCamPos.applyQuaternion(rotationQuaternion);
+          camera.position.copy(controls.target).add(relativeCamPos);
+        }
+
+        // 4. Update previous rotation for next frame
+        prevTargetRotationY.current = currentTargetRotationY;
+
+        // 5. Update controls (handles user input and finalizes camera state)
+        controls.update();
       } else {
         // Target mesh somehow disappeared, fallback? Maybe unfocus.
         // For now, just allow free control.
