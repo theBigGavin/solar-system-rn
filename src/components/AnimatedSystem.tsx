@@ -144,7 +144,7 @@ const AnimatedSystem = ({
   });
 
   const sunNormalizedRadius = sunData ? normalizeRadius(sunData.radius) : 0.1;
-  const glowScaleFactor = 3;
+  const glowScaleFactor = 2.5; // Adjust this value to change the glow size
   const glowScale: [number, number, number] = [
     sunNormalizedRadius * glowScaleFactor,
     sunNormalizedRadius * glowScaleFactor,
