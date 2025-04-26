@@ -46,6 +46,8 @@ jobs:
         run: npx expo export --platform web
       - name: Verify build output
         run: ls -la # Keep this for now to be sure
+      - name: Copy assets into dist directory
+        run: cp -r assets dist/
       - name: Fix asset paths in index.html
         run: |
           sed -i 's|src="/_expo/|src="/solar-system-rn/_expo/|g' dist/index.html
