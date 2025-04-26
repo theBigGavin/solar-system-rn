@@ -41,6 +41,8 @@ jobs:
         # Run in the root directory
         # Run the Expo export command directly
         run: npx expo export --platform web
+      - name: Verify build output
+        run: ls -la
       - name: Setup Pages
         uses: actions/configure-pages@v5
       - name: Upload artifact
