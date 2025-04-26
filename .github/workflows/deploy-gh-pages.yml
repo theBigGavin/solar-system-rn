@@ -46,6 +46,11 @@ jobs:
         run: npx expo export --platform web
       - name: Verify build output
         run: ls -la # Keep this for now to be sure
+      - name: Fix asset paths in index.html
+        run: |
+          sed -i 's|src="/_expo/|src="/solar-system-rn/_expo/|g' dist/index.html
+          sed -i 's|href="/_expo/|href="/solar-system-rn/_expo/|g' dist/index.html
+          sed -i 's|href="/favicon.ico"|href="/solar-system-rn/favicon.ico"|g' dist/index.html
       - name: Setup Pages
         uses: actions/configure-pages@v5
       - name: Upload artifact
