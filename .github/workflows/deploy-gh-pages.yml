@@ -53,6 +53,19 @@ jobs:
           sed -i 's|src="/_expo/|src="/solar-system-rn/_expo/|g' dist/index.html
           sed -i 's|href="/_expo/|href="/solar-system-rn/_expo/|g' dist/index.html
           sed -i 's|href="/favicon.ico"|href="/solar-system-rn/favicon.ico"|g' dist/index.html
+      - name: Fix asset paths in JS bundle (Experimental)
+        run: |
+          JS_FILE=$(find dist/_expo/static/js/web -name 'index-*.js' -print -quit)
+          if [ -n "$JS_FILE" ]; then
+            echo "Attempting to patch JS file: $JS_FILE"
+            # Try replacing common asset path patterns within JS strings
+            # This is risky and might need adjustment based on actual bundle content
+            sed -i 's|"assets/|"\/solar-system-rn\/assets\/|g' "$JS_FILE"
+            sed -i 's|\"\/assets\/|\"\/solar-system-rn\/assets\/|g' "$JS_FILE" # Handle if path starts with /
+            echo "JS patching attempt complete."
+          else
+            echo "Warning: Main JS bundle not found, skipping JS patching."
+          fi
       - name: Setup Pages
         uses: actions/configure-pages@v5
       - name: Upload artifact
