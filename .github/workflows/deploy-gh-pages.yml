@@ -40,7 +40,7 @@ jobs:
       - name: Build
         # Run in the root directory
         # Run the Expo export command directly
-        run: npx expo export --platform web --debug || true
+        run: npx expo export --platform web || true
       - name: Verify build output
         run: ls -la
       - name: Setup Pages
