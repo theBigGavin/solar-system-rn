@@ -1,105 +1,62 @@
-# Solar System RN
+# Solar System RN (React Native Solar System Simulation)
 
-This is a solar system simulation application built using React Native and Three.js. It utilizes `@react-three/fiber` and `expo-three` to render 3D scenes on mobile and web platforms.
+This is a solar system simulation application built using React Native and Three.js (@react-three/fiber). It allows users to explore the planets of our solar system and their orbits on mobile devices or the web.
 
 ## ✨ Features
 
-- Simulates the orbital motion of major planets and their moons in the solar system.
-- Uses Three.js for 3D rendering.
-- Built with React Native and Expo, enabling cross-platform compatibility (iOS, Android, Web).
-- Written in TypeScript for type safety.
+- Built with React Native and Expo, supporting iOS, Android, and Web platforms.
+- Utilizes `@react-three/fiber` and `@react-three/drei` for 3D rendering.
+- Displays major planets and their moons in the solar system.
+- Simulates planetary orbital motion.
+- Includes planetary textures for a more realistic visual experience.
+- Supports gesture interactions (via `react-native-gesture-handler`).
 
 ## 🛠️ Tech Stack
 
-- [React Native](https://reactnative.dev/)
-- [Expo](https://expo.dev/)
-- [TypeScript](https://www.typescriptlang.org/)
-- [Three.js](https://threejs.org/)
-- [@react-three/fiber](https://docs.pmnd.rs/react-three-fiber/getting-started/introduction)
-- [@react-three/drei](https://github.com/pmndrs/drei)
-- [expo-gl](https://docs.expo.dev/versions/latest/sdk/gl-view/)
-- [expo-three](https://docs.expo.dev/versions/latest/universe/expo-three/)
+- **Framework:** React Native, Expo
+- **Language:** TypeScript
+- **3D Rendering:** Three.js, @react-three/fiber, @react-three/drei, expo-three
+- **UI & Interaction:** React Native Gesture Handler, @react-native-picker/picker, @react-native-community/slider
 
-## 🚀 Getting Started
+## 🚀 How to Run
 
 1.  **Clone the repository:**
-
     ```bash
-    git clone <your-repository-url>
+    git clone git@github.com:theBigGavin/solar-system-rn.git
     cd solar-system-rn
     ```
-
-    _Replace `<your-repository-url>` with the actual repository URL._
-
 2.  **Install dependencies:**
-    Using `yarn` is recommended:
-
     ```bash
     yarn install
+    # or npm install
     ```
-
-    Or using `npm`:
-
-    ```bash
-    npm install
-    ```
-
-3.  **Run the project:**
-
-    - **Start the Expo development server:**
-
-      ```bash
+3.  **Start the application:** - Start the Expo development server:
+    `bash
       yarn start
-      # or
-      npm start
-      ```
-
-      Then follow the prompts to open the app in the Expo Go app (iOS, Android) or a web browser.
-
-    - **Run directly on a specific platform:**
-
-      ```bash
-      # Android
+      ` - Run on an Android device/emulator:
+    `bash
       yarn android
-      # or
-      npm run android
-
-      # iOS
+      ` - Run on an iOS device/simulator (requires macOS and Xcode):
+    `bash
       yarn ios
-      # or
-      npm run ios
-
-      # Web
-      yarn web
-      # or
-      npm run web
-      ```
+      ` - Run in a web browser:
+    `bash
+yarn web
+`
+    Follow the prompts in the Expo Go app or your terminal.
 
 ## 📁 Project Structure
 
 ```
 solar-system-rn/
-├── .expo/             # Expo configuration files and cache
-├── .gitignore         # Git ignore file configuration
-├── App.tsx            # Application root component
-├── app.json           # Expo app configuration file
-├── assets/            # Static assets (images, textures, etc.)
-├── index.ts           # Application entry point (managed by Expo)
-├── node_modules/      # Project dependencies
-├── package.json       # Project metadata and dependency management
-├── src/               # Main source code directory
-│   ├── components/    # Reusable React components
-│   ├── constants/     # Constants and configuration files
-│   ├── solar-system/  # Core logic and components for the solar system simulation
-│   └── utils/         # Utility functions
-├── tsconfig.json      # TypeScript configuration file
-└── yarn.lock          # Yarn dependency lock file (if using Yarn)
+├── assets/         # Static assets like images, textures
+├── src/            # Project source code
+│   ├── components/ # Reusable UI and 3D components
+│   ├── constants/  # Constants and configuration files (e.g., planet data)
+│   ├── solar-system/ # Core logic for the solar system simulation
+│   └── utils/      # Utility functions
+├── App.tsx         # Root application component
+├── app.json        # Expo configuration file
+├── package.json    # Project dependencies and scripts
+└── ...             # Other configuration files and directories
 ```
-
-## 🤝 Contributing
-
-Issues and pull requests are welcome!
-
-## 📄 License
-
-(Add license information as needed, e.g., MIT)

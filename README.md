@@ -1,105 +1,62 @@
-# Solar System RN (太阳系模拟 React Native 版)
+# Solar System RN (太阳系模拟 React Native 应用)
 
-这是一个使用 React Native 和 Three.js 构建的太阳系模拟应用程序。它利用 `@react-three/fiber` 和 `expo-three` 在移动端和 Web 端渲染 3D 场景。
+这是一个使用 React Native 和 Three.js (@react-three/fiber) 构建的太阳系模拟应用程序。它允许用户在移动设备或 Web 上探索太阳系的行星及其轨道。
 
 ## ✨ 特性
 
-- 模拟太阳系中主要行星及其卫星的轨道运动。
-- 使用 Three.js 进行 3D 渲染。
-- 基于 React Native 和 Expo，可跨平台运行 (iOS, Android, Web)。
-- 使用 TypeScript 编写，提供类型安全。
+- 基于 React Native 和 Expo 构建，支持 iOS、Android 和 Web 平台。
+- 使用 `@react-three/fiber` 和 `@react-three/drei` 进行 3D 渲染。
+- 展示太阳系中的主要行星及其卫星。
+- 模拟行星的轨道运动。
+- 包含行星纹理贴图，提供更逼真的视觉效果。
+- 支持手势交互（通过 `react-native-gesture-handler`）。
 
 ## 🛠️ 技术栈
 
-- [React Native](https://reactnative.dev/)
-- [Expo](https://expo.dev/)
-- [TypeScript](https://www.typescriptlang.org/)
-- [Three.js](https://threejs.org/)
-- [@react-three/fiber](https://docs.pmnd.rs/react-three-fiber/getting-started/introduction)
-- [@react-three/drei](https://github.com/pmndrs/drei)
-- [expo-gl](https://docs.expo.dev/versions/latest/sdk/gl-view/)
-- [expo-three](https://docs.expo.dev/versions/latest/universe/expo-three/)
+- **框架:** React Native, Expo
+- **语言:** TypeScript
+- **3D 渲染:** Three.js, @react-three/fiber, @react-three/drei, expo-three
+- **UI & 交互:** React Native Gesture Handler, @react-native-picker/picker, @react-native-community/slider
 
-## 🚀 如何开始
+## 🚀 如何运行
 
 1.  **克隆仓库:**
-
     ```bash
-    git clone <your-repository-url>
+    git clone git@github.com:theBigGavin/solar-system-rn.git
     cd solar-system-rn
     ```
-
-    _请将 `<your-repository-url>` 替换为实际的仓库地址。_
-
 2.  **安装依赖:**
-    推荐使用 `yarn`：
-
     ```bash
     yarn install
+    # 或者 npm install
     ```
-
-    或者使用 `npm`：
-
-    ```bash
-    npm install
-    ```
-
-3.  **运行项目:**
-
-    - **启动 Expo 开发服务器:**
-
-      ```bash
+3.  **启动应用:** - 启动 Expo 开发服务器:
+    `bash
       yarn start
-      # 或者
-      npm start
-      ```
-
-      然后根据提示在 Expo Go 应用 (iOS, Android) 或 Web 浏览器中打开。
-
-    - **直接在特定平台运行:**
-
-      ```bash
-      # Android
+      ` - 在 Android 设备/模拟器上运行:
+    `bash
       yarn android
-      # 或者
-      npm run android
-
-      # iOS
+      ` - 在 iOS 设备/模拟器上运行 (需要 macOS 和 Xcode):
+    `bash
       yarn ios
-      # 或者
-      npm run ios
-
-      # Web
-      yarn web
-      # 或者
-      npm run web
-      ```
+      ` - 在 Web 浏览器中运行:
+    `bash
+yarn web
+`
+    根据 Expo Go 应用或终端中的提示进行操作。
 
 ## 📁 项目结构
 
 ```
 solar-system-rn/
-├── .expo/             # Expo 配置文件和缓存
-├── .gitignore         # Git 忽略文件配置
-├── App.tsx            # 应用根组件
-├── app.json           # Expo 应用配置文件
-├── assets/            # 静态资源 (图像, 纹理等)
-├── index.ts           # 应用入口文件 (由 Expo 管理)
-├── node_modules/      # 项目依赖
-├── package.json       # 项目元数据和依赖管理
-├── src/               # 主要源代码目录
-│   ├── components/    # 可复用的 React 组件
-│   ├── constants/     # 常量和配置文件
-│   ├── solar-system/  # 太阳系模拟核心逻辑和组件
-│   └── utils/         # 工具函数
-├── tsconfig.json      # TypeScript 配置文件
-└── yarn.lock          # Yarn 依赖锁定文件 (如果使用 Yarn)
+├── assets/         # 存放图片、纹理等静态资源
+├── src/            # 项目源代码
+│   ├── components/ # 可复用的 UI 和 3D 组件
+│   ├── constants/  # 常量和配置文件 (如行星数据)
+│   ├── solar-system/ # 太阳系模拟核心逻辑
+│   └── utils/      # 工具函数
+├── App.tsx         # 应用根组件
+├── app.json        # Expo 配置文件
+├── package.json    # 项目依赖和脚本
+└── ...             # 其他配置文件和目录
 ```
-
-## 🤝 贡献
-
-欢迎提交问题和合并请求！
-
-## 📄 许可证
-
-(请根据需要添加许可证信息，例如 MIT)
