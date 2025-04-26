@@ -40,6 +40,9 @@ jobs:
       - name: Build
         # Run in the root directory
         # Run the Expo export command directly
+        # Set PUBLIC_URL environment variable to influence asset paths
+        env:
+          PUBLIC_URL: /solar-system-rn/
         run: npx expo export --platform web
       - name: Verify build output
         run: ls -la # Keep this for now to be sure
