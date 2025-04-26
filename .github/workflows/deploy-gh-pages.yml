@@ -39,16 +39,15 @@ jobs:
         run: yarn install
       - name: Build
         # Run in the root directory
-        # Use the existing predeploy script which runs 'npx expo export --platform web'
-        # Expo exports web builds to the 'dist' directory by default
-        run: yarn predeploy
+        # Run the Expo export command directly
+        run: npx expo export --platform web
       - name: Setup Pages
         uses: actions/configure-pages@v5
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
         with:
-          # Upload the 'dist' directory from the root folder
-          path: "./dist"
+          # Upload the 'web-build' directory from the root folder
+          path: "./web-build"
       - name: Deploy check
         run: echo "Artifact uploaded, deployment job will start."
 
