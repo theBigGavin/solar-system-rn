@@ -1,15 +1,12 @@
 {
   "name": "solar-system-rn",
   "version": "1.0.0",
-  "main": "index.ts",
   "homepage": "https://theBigGavin.github.io/solar-system-rn/",
   "scripts": {
     "start": "expo start",
     "android": "expo start --android",
     "ios": "expo start --ios",
-    "web": "expo start --web",
-    "deploy": "gh-pages -d dist",
-    "predeploy": "npx expo export --platform web"
+    "web": "expo start --web"
   },
   "dependencies": {
     "@expo/metro-runtime": "~4.0.1",
