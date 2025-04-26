@@ -40,16 +40,16 @@ jobs:
       - name: Build
         # Run in the root directory
         # Run the Expo export command directly
-        run: npx expo export --platform web || true
+        run: npx expo export --platform web
       - name: Verify build output
-        run: ls -la
+        run: ls -la # Keep this for now to be sure
       - name: Setup Pages
         uses: actions/configure-pages@v5
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
         with:
-          # Upload the 'web-build' directory from the root folder
-          path: "./web-build"
+          # Upload the 'dist' directory, as confirmed by build logs
+          path: "./dist"
       - name: Deploy check
         run: echo "Artifact uploaded, deployment job will start."
 
