@@ -32,12 +32,13 @@ jobs:
         with:
           node-version: 20 # Or your preferred Node.js version
           cache: "yarn"
-          cache-dependency-path: solar-system-rn/yarn.lock # Specify path to lock file
+          # Use the lock file in the root directory
+          cache-dependency-path: yarn.lock
       - name: Install dependencies
-        working-directory: ./solar-system-rn # Specify working directory
+        # Run in the root directory
         run: yarn install
       - name: Build
-        working-directory: ./solar-system-rn # Specify working directory
+        # Run in the root directory
         # Use the existing predeploy script which runs 'npx expo export --platform web'
         # Expo exports web builds to the 'dist' directory by default
         run: yarn predeploy
@@ -46,8 +47,8 @@ jobs:
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
         with:
-          # Upload the 'dist' directory from the solar-system-rn folder
-          path: "./solar-system-rn/dist"
+          # Upload the 'dist' directory from the root folder
+          path: "./dist"
       - name: Deploy check
         run: echo "Artifact uploaded, deployment job will start."
 
