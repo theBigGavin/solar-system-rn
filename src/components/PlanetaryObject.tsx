@@ -26,6 +26,7 @@ export interface PlanetData {
   labels?: any[];
   offset?: number;
   moonsData?: PlanetData[]; // Add optional moonsData field
+  orbitalInclination?: number; // Add orbital inclination (degrees)
 }
 
 // Define Transform interface locally or import if shared
@@ -258,7 +259,7 @@ const PlanetaryObject = forwardRef<THREE.Mesh, PlanetaryObjectProps>(
         ref={ref} // Use the forwarded ref here
         position={position} // Apply position if passed as prop
         // Apply tilt directly here based on planetData
-        rotation={[0, 0, THREE.MathUtils.degToRad(planetData.tilt)]} // Apply tilt on Z-axis (assuming Y is up)
+        // Tilt is now handled by the parent group in SolarSystem.tsx
         // Rotation order might be important depending on how tilt interacts with potential future rotation
         // rotation-order="YXZ" // Example if needed later
         // --- Shadow Casting/Receiving ---

@@ -10,14 +10,14 @@ interface RingsProps {
   textureFilename: string;
   innerRadius: number; // Scaled inner radius
   outerRadius: number; // Scaled outer radius
-  tilt: number; // Tilt in radians
+  // tilt: number; // Tilt is now handled by the parent group
 }
 
 const Rings: React.FC<RingsProps> = ({
   textureFilename,
   innerRadius,
   outerRadius,
-  tilt,
+  // tilt, // Removed
 }) => {
   const meshRef = useRef<THREE.Mesh>(null!);
   const geometryRef = useRef<THREE.RingGeometry>(null!);
@@ -78,7 +78,7 @@ const Rings: React.FC<RingsProps> = ({
     console.log(`Ring ${textureFilename}: Loading texture URI...`);
     // Render placeholder while texture URI is loading
     return (
-      <mesh rotation-x={Math.PI / 2 + tilt}>
+      <mesh rotation-x={Math.PI / 2}>
         <ringGeometry args={[innerRadius, outerRadius, 64]} />
         <meshBasicMaterial color="grey" wireframe side={THREE.DoubleSide} />
       </mesh>
@@ -89,7 +89,7 @@ const Rings: React.FC<RingsProps> = ({
     console.error(`Ring ${textureFilename}: Texture error - ${textureError}`);
     // Render error placeholder
     return (
-      <mesh rotation-x={Math.PI / 2 + tilt}>
+      <mesh rotation-x={Math.PI / 2}>
         <ringGeometry args={[innerRadius, outerRadius, 64]} />
         <meshBasicMaterial color="red" wireframe side={THREE.DoubleSide} />
       </mesh>
@@ -104,7 +104,7 @@ const Rings: React.FC<RingsProps> = ({
     );
     // Render error or different placeholder
     return (
-      <mesh rotation-x={Math.PI / 2 + tilt}>
+      <mesh rotation-x={Math.PI / 2}>
         <ringGeometry args={[innerRadius, outerRadius, 64]} />
         <meshBasicMaterial color="purple" wireframe side={THREE.DoubleSide} />
       </mesh>
@@ -117,7 +117,7 @@ const Rings: React.FC<RingsProps> = ({
       resolvedUri={resolvedUri}
       innerRadius={innerRadius}
       outerRadius={outerRadius}
-      tilt={tilt}
+      // tilt={tilt} // Removed
       textureFilename={textureFilename} // Pass filename for logging
     />
   );
@@ -136,7 +136,7 @@ const RingsRenderer: React.FC<RingsRendererProps> = ({
   resolvedUri,
   innerRadius,
   outerRadius,
-  tilt,
+  // tilt, // Removed from props
   textureFilename, // Receive filename for logging
 }) => {
   const meshRef = useRef<THREE.Mesh>(null!);
@@ -272,7 +272,7 @@ const RingsRenderer: React.FC<RingsRendererProps> = ({
       `RingsRenderer for ${textureFilename}: Rendering error placeholder due to load error: ${loadError}`
     );
     return (
-      <mesh rotation-x={Math.PI / 2 + tilt}>
+      <mesh rotation-x={Math.PI / 2}>
         <ringGeometry args={[innerRadius, outerRadius, 64]} />
         <meshBasicMaterial color="darkred" wireframe side={THREE.DoubleSide} />
       </mesh>
@@ -285,7 +285,7 @@ const RingsRenderer: React.FC<RingsRendererProps> = ({
     );
     // Render placeholder while texture is loading via TextureLoader
     return (
-      <mesh rotation-x={Math.PI / 2 + tilt}>
+      <mesh rotation-x={Math.PI / 2}>
         <ringGeometry args={[innerRadius, outerRadius, 64]} />
         <meshBasicMaterial color="yellow" wireframe side={THREE.DoubleSide} />
       </mesh>
@@ -301,7 +301,7 @@ const RingsRenderer: React.FC<RingsRendererProps> = ({
     <mesh
       ref={meshRef}
       geometry={geometry}
-      rotation-x={Math.PI / 2 + tilt}
+      rotation-x={Math.PI / 2} // Rotate ring to be horizontal relative to its parent
       receiveShadow // Re-enable receiving shadows
     >
       {/* Restore MeshStandardMaterial with texture and transparency */}

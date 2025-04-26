@@ -14,6 +14,7 @@ interface OrbitalPathProps {
   segments?: number; // Number of segments for the circle approximation
   color?: THREE.ColorRepresentation;
   dashed?: boolean; // Keep dashed removed for now
+  // inclination?: number; // Removed - Parent group will handle rotation
 }
 
 const OrbitalPath: React.FC<OrbitalPathProps> = ({
@@ -21,6 +22,7 @@ const OrbitalPath: React.FC<OrbitalPathProps> = ({
   // Remove scaleFactor from props
   segments = 128, // Default segments for a smooth circle
   color = 0xaaaaaa, // Default color (light gray)
+  // inclination = 0, // Removed
 }) => {
   const points = useMemo(() => {
     // Apply normalization internally
@@ -70,8 +72,9 @@ const OrbitalPath: React.FC<OrbitalPathProps> = ({
     // Ensure compatibility with React Native by creating the line object directly
     const line = new THREE.Line(geometry, material);
     line.matrixAutoUpdate = false; // Disable auto-updates to avoid unnecessary computations
+    // Return the primitive without applying rotation here
     return <primitive object={line} />;
-  }, [geometry, material]);
+  }, [geometry, material]); // Remove inclination from dependency array
 };
 
 export default OrbitalPath;
