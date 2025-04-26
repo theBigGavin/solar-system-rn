@@ -22,8 +22,7 @@
       }
     },
     "web": {
-      "favicon": "./assets/favicon.png",
-      "baseUrl": "/solar-system-rn/" // Explicitly set base URL for web build
+      "favicon": "./assets/favicon.png"
     }
   }
 }
