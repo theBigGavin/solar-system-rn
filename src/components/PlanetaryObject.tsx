@@ -8,6 +8,7 @@ import { textureMap } from "../constants/textureMap";
 export interface PlanetData {
   // Export the interface
   name: string;
+  name_cn?: string; // Add Chinese name field (optional)
   radius: number;
   distance: number;
   period: number;

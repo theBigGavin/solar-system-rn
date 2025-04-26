@@ -38,15 +38,23 @@ export default function SolarSystem() {
   const pointLightRef = useRef<THREE.PointLight>(null); // Ref for the main point light
   const baseLightIntensity = 15; // Adjust base intensity for point light
 
-  const selectableTargetsList = [
-    { name: "View Solar System", value: null },
+  // Define the structure for selectable targets, including Chinese names
+  interface SelectableTarget {
+    name: string;
+    name_cn?: string; // Optional for "View Solar System"
+    value: string | null;
+  }
+
+  const selectableTargetsList: SelectableTarget[] = [
+    { name: "View Solar System", name_cn: "查看太阳系", value: null }, // Add Chinese name
     ...allPlanetData
       .filter(
         (p) =>
           (p.type === "planet" || p.type === "moon" || p.type === "star") &&
           p.traversable !== false
       )
-      .map((p) => ({ name: p.name, value: p.name })),
+      // Map to the new structure including name_cn
+      .map((p) => ({ name: p.name, name_cn: p.name_cn, value: p.name })),
   ];
 
   const goToNextTarget = () => {
@@ -63,8 +71,8 @@ export default function SolarSystem() {
     setSelectedTarget(selectableTargetsList[prevIndex].value);
   };
 
-  const currentTargetDisplayName =
-    selectableTargetsList[currentTargetIndex]?.name;
+  // Get the full target object including both names
+  const currentTarget = selectableTargetsList[currentTargetIndex];
 
   // Effect to update light intensity based on brightness slider
   useEffect(() => {
@@ -195,7 +203,15 @@ export default function SolarSystem() {
         >
           <Text style={styles.arrowText}>←</Text>
         </TouchableOpacity>
-        <Text style={styles.targetNameText}>{currentTargetDisplayName}</Text>
+        {/* Container for target names */}
+        <View style={styles.targetNameContainer}>
+          {/* Display Chinese name if available */}
+          {currentTarget?.name_cn && (
+            <Text style={styles.targetNameTextCn}>{currentTarget.name_cn}</Text>
+          )}
+          {/* Display English name */}
+          <Text style={styles.targetNameTextEn}>{currentTarget?.name}</Text>
+        </View>
         <TouchableOpacity onPress={goToNextTarget} style={styles.arrowButton}>
           <Text style={styles.arrowText}>→</Text>
         </TouchableOpacity>
@@ -236,13 +252,26 @@ const styles = StyleSheet.create({
     fontSize: 24,
     fontWeight: "bold",
   },
-  targetNameText: {
+  targetNameContainer: {
+    // New style for the container
+    flex: 1,
+    alignItems: "center", // Center items horizontally
+    justifyContent: "center", // Center items vertically
+    marginHorizontal: 5, // Reduced margin slightly
+  },
+  targetNameTextCn: {
+    // Style for Chinese name
     color: "#FFF",
-    fontSize: 16,
+    fontSize: 16, // Slightly larger font for Chinese
     fontWeight: "bold",
     textAlign: "center",
-    flex: 1,
-    marginHorizontal: 10,
+  },
+  targetNameTextEn: {
+    // Style for English name
+    color: "#DDD", // Slightly dimmer color for English
+    fontSize: 12, // Smaller font for English
+    textAlign: "center",
+    marginTop: 2, // Add a small margin top
   },
   sliderContainer: {
     position: "absolute",
