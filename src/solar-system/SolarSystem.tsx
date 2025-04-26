@@ -35,8 +35,8 @@ export default function SolarSystem() {
   const meshRefs = useRef<{ [key: string]: THREE.Mesh | null }>({});
   const orbitRefs = useRef<{ [key: string]: THREE.Group | null }>({});
   const controlsRef = useRef<OrbitControlsImpl | null>(null);
-  const pointLightRef = useRef<THREE.PointLight>(null); // Ref for the main light
-  const baseLightIntensity = 10; // Increase base intensity significantly
+  const pointLightRef = useRef<THREE.PointLight>(null); // Ref for the main point light
+  const baseLightIntensity = 15; // Adjust base intensity for point light
 
   const selectableTargetsList = [
     { name: "View Solar System", value: null },
@@ -73,12 +73,12 @@ export default function SolarSystem() {
       const newIntensity = baseLightIntensity * brightness;
       pointLightRef.current.intensity = newIntensity;
       // console.log(
-      //   `Updating light intensity: base=${baseLightIntensity}, brightness=${brightness.toFixed(
+      //   `Updating point light intensity: base=${baseLightIntensity}, brightness=${brightness.toFixed(
       //     2
       //   )}, newIntensity=${newIntensity.toFixed(2)}`
-      // ); // Remove log
+      // );
     }
-    // else { // Remove ref check log and isInitialMount ref
+    // else {
     //   console.log("PointLight ref not yet available.");
     // }
   }, [brightness, pointLightRef]); // Rerun when brightness changes OR pointLightRef becomes available
@@ -86,6 +86,7 @@ export default function SolarSystem() {
   return (
     <View style={styles.container}>
       <Canvas
+        shadows={{ type: THREE.PCFSoftShadowMap }} // Enable shadow map and set type
         gl={{
           antialias: true,
           debug: {
@@ -117,19 +118,20 @@ export default function SolarSystem() {
           position={[0, 10, 25]}
         />
         {/* Lights */}
-        <ambientLight intensity={0.2} /> {/* Restore ambient light */}
+        <ambientLight intensity={0.2} /> {/* Restore ambient light intensity */}
         <pointLight
-          ref={pointLightRef} // Assign ref to the point light
-          position={[0, 0, 0]}
+          ref={pointLightRef} // Assign ref back to point light
+          position={[0, 0, 0]} // Position back at the center (Sun's location)
           // Set initial intensity based on initial brightness state
           intensity={baseLightIntensity * brightness}
-          decay={2} // Restore default light decay
+          decay={2} // Restore decay for point light
           castShadow
-          shadow-mapSize-width={4096}
+          shadow-mapSize-width={4096} // Keep high resolution shadow map
           shadow-mapSize-height={4096}
-          shadow-camera-near={1.5}
-          shadow-camera-far={500}
-          shadow-radius={16}
+          shadow-camera-near={1} // Adjust near plane for point light shadow camera
+          shadow-camera-far={1000} // Increase far plane significantly to cover the system
+          shadow-radius={8} // Keep softer radius
+          shadow-bias={-0.0005} // Keep bias
         />
         {/* OrbitControls */}
         <OrbitControls

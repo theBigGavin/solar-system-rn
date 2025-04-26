@@ -263,7 +263,7 @@ const PlanetaryObject = forwardRef<THREE.Mesh, PlanetaryObjectProps>(
         // Rotation order might be important depending on how tilt interacts with potential future rotation
         // rotation-order="YXZ" // Example if needed later
         // --- Shadow Casting/Receiving ---
-        castShadow={planetData.name === "Moon"} // Only Moon casts shadow for eclipse effect
+        castShadow={planetData.type === "moon"} // Moons cast shadows
         receiveShadow={
           planetData.type === "planet" || planetData.type === "moon"
         } // Planets and Moons receive shadows
@@ -273,10 +273,10 @@ const PlanetaryObject = forwardRef<THREE.Mesh, PlanetaryObjectProps>(
         {type === "star" ? (
           <meshBasicMaterial
             map={finalTextures.map || undefined}
-            // Add color prop to increase brightness, similar to web version
-            color={new THREE.Color(2.5, 2.5, 2.5)}
-            transparent={false} // Explicitly set non-transparent
-            toneMapped={false} // Disable tone mapping for basic material
+            // Increase color values significantly to simulate intense brightness
+            color={new THREE.Color(5, 5, 4)} // Very bright yellowish white
+            transparent={false}
+            toneMapped={false} // Disable tone mapping for a brighter look
           />
         ) : (
           // Planet/Moon material
