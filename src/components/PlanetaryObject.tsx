@@ -286,7 +286,7 @@ const PlanetaryObject = forwardRef<THREE.Mesh, PlanetaryObjectProps>(
             bumpMap={finalTextures.bump || undefined}
             // specularMap removed - StandardMaterial doesn't use it directly like Phong
             // Use scaledRadius for bumpScale, similar to original project?
-            bumpScale={finalTextures.bump ? scaledRadius / 50 : 0} // Adjusted bumpScale based on original
+            bumpScale={finalTextures.bump ? 0.2 : 0} // Increased bumpScale for visibility
             // Add metalness and roughness if desired for PBR look
             // metalness={0.1}
             // roughness={0.8}

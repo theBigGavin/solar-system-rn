@@ -1,7 +1,9 @@
-import React, { useRef } from "react"; // Import useRef
+import React, { useRef, useState, useEffect } from "react"; // Import useRef, useState, useEffect
 import { useFrame } from "@react-three/fiber/native";
 import { THREE } from "expo-three"; // 替换 three 为 expo-three
 import { useTexture } from "@react-three/drei/native"; // Import useTexture
+import { Asset } from "expo-asset"; // Import Asset
+import { textureMap } from "../constants/textureMap"; // Import textureMap
 
 // Import PlanetaryObject component and planet data
 import PlanetaryObject, { PlanetData } from "./PlanetaryObject";
@@ -38,15 +40,58 @@ const AnimatedSystem = ({
   const accumulatedSimulatedDays = useRef(0);
   const moonOrbitRefs = React.useRef<{ [key: string]: THREE.Group | null }>({});
 
-  let glowTexture: THREE.Texture | null = null;
-  try {
-    const loadedGlowTexture = useTexture("assets/textures/glow.png");
-    if (loadedGlowTexture) {
-      glowTexture = loadedGlowTexture;
-    }
-  } catch (e) {
-    console.warn("Could not load glow texture 'assets/textures/glow.png':", e);
-  }
+  const [glowTextureUri, setGlowTextureUri] = useState<string | null>(null);
+  const [isLoadingGlow, setIsLoadingGlow] = useState(true);
+  const [glowError, setGlowError] = useState<string | null>(null);
+
+  // Effect to load glow texture
+  useEffect(() => {
+    let isMounted = true;
+    const loadGlowTexture = async () => {
+      setIsLoadingGlow(true);
+      setGlowError(null);
+      try {
+        const assetModule = textureMap["glow.png"];
+        if (assetModule) {
+          const asset = Asset.fromModule(assetModule);
+          await asset.downloadAsync();
+          const uriToUse = asset.localUri || asset.uri;
+          if (
+            isMounted &&
+            typeof uriToUse === "string" &&
+            uriToUse.trim() !== ""
+          ) {
+            setGlowTextureUri(uriToUse);
+          } else if (isMounted) {
+            console.warn(
+              "Could not get a valid string URI for glow.png. Got:",
+              uriToUse
+            );
+            setGlowError("Failed to get glow texture URI");
+          }
+        } else {
+          console.warn("glow.png not found in textureMap.");
+          if (isMounted) setGlowError("glow.png not in textureMap");
+        }
+      } catch (error: any) {
+        console.error("Error loading glow texture:", error);
+        if (isMounted) setGlowError(`Error loading glow: ${error.message}`);
+      } finally {
+        if (isMounted) setIsLoadingGlow(false);
+      }
+    };
+
+    loadGlowTexture();
+
+    return () => {
+      isMounted = false;
+    };
+  }, []); // Empty dependency array ensures this runs only once
+
+  // Load texture using the hook only when URI is ready
+  const glowTextureArray = useTexture(glowTextureUri ? [glowTextureUri] : []);
+  const glowTexture =
+    glowTextureUri && glowTextureArray.length > 0 ? glowTextureArray[0] : null;
 
   const allPlanetData = allPlanetDataJson as PlanetData[];
   const sunData = allPlanetData.find((p) => p.type === "star");
@@ -99,7 +144,7 @@ const AnimatedSystem = ({
   });
 
   const sunNormalizedRadius = sunData ? normalizeRadius(sunData.radius) : 0.1;
-  const glowScaleFactor = 6;
+  const glowScaleFactor = 3;
   const glowScale: [number, number, number] = [
     sunNormalizedRadius * glowScaleFactor,
     sunNormalizedRadius * glowScaleFactor,

@@ -29,6 +29,8 @@ export const textureMap: { [key: string]: any } = {
   // Rings
   'saturn-ring.png': require('../../assets/textures/saturn-ring.png'),
 
+  // Effects
+  'glow.png': require('../../assets/textures/glow.png'),
   // Environment (though likely loaded differently later)
   'environment/px.png': require('../../assets/textures/environment/px.png'),
   'environment/nx.png': require('../../assets/textures/environment/nx.png'),

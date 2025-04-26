@@ -28,9 +28,9 @@ const allPlanetData = allPlanetDataJson as PlanetData[];
 export default function SolarSystem() {
   const [selectedTarget, setSelectedTarget] = useState<string | null>(null);
   const [currentTargetIndex, setCurrentTargetIndex] = useState<number>(0);
-  const [brightness, setBrightness] = useState(33.33); // State for brightness (now controls light intensity multiplier)
+  const [brightness, setBrightness] = useState(15); // State for brightness (now controls light intensity multiplier)
   // console.log(`SolarSystem Initial Mount - Brightness State: ${brightness}`); // Remove log
-  const [timeScale, setTimeScale] = useState(1); // State for time scale factor
+  const [timeScale, setTimeScale] = useState(0.1); // State for time scale factor
 
   const meshRefs = useRef<{ [key: string]: THREE.Mesh | null }>({});
   const orbitRefs = useRef<{ [key: string]: THREE.Group | null }>({});
@@ -184,15 +184,15 @@ export default function SolarSystem() {
         <Slider
           style={styles.slider}
           minimumValue={0.1} // Min time scale (0.1 day/sec)
-          maximumValue={50} // Max time scale (50 days/sec)
-          step={1}
+          maximumValue={5} // Max time scale (50 days/sec)
+          step={0.1}
           value={timeScale}
           onValueChange={setTimeScale}
           minimumTrackTintColor="#FFFFFF"
           maximumTrackTintColor="#AAAAAA"
           thumbTintColor={Platform.OS === "android" ? "#FFFFFF" : undefined}
         />
-        <Text style={styles.sliderValue}>{timeScale.toFixed(0)}</Text>
+        <Text style={styles.sliderValue}>{timeScale.toFixed(2)}</Text>
       </View>
 
       {/* Camera Control UI */}
