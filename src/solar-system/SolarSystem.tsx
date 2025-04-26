@@ -120,7 +120,7 @@ export default function SolarSystem() {
         {/* Camera */}
         <PerspectiveCamera
           makeDefault
-          fov={75}
+          fov={50}
           near={0.2}
           far={10000}
           position={[0, 10, 25]}

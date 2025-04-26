@@ -199,8 +199,8 @@ const AnimatedSystem = ({
                     ringsData.textures?.map && (
                       <Rings
                         textureFilename={ringsData.textures.map}
-                        innerRadius={normalizeRadius(planet.radius) * 1.2}
-                        outerRadius={normalizeRadius(planet.radius) * 2.5}
+                        innerRadius={normalizeRadius(planet.radius) * 0.9}
+                        outerRadius={normalizeRadius(planet.radius) * 1.2}
                       />
                     )}
                 </group>

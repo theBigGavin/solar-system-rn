@@ -185,7 +185,8 @@
   {
     "name": "Rings of Saturn",
     "name_cn": "土星环",
-    "radius": 3,
+    "innerRadius": 1.1,
+    "outerRadius": 2.3,
     "distance": 0,
     "period": 1,
     "daylength": 1,
@@ -224,7 +225,7 @@
     "type": "moon",
     "orbits": "Saturn",
     "tilt": 27,
-    "orbitalInclination": 2.49,
+    "orbitalInclination": 0,
     "traversable": false,
     "textures": {
       "map": "titan.webp"
