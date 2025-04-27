@@ -1,5 +1,5 @@
 import React, { Suspense, useRef, useState, useEffect } from "react"; // Add useEffect import
-import { Canvas } from "@react-three/fiber/native";
+import { Canvas } from "@react-three/fiber";
 import { THREE } from "expo-three"; // 替换 three 为 expo-three
 import { PerspectiveCamera, OrbitControls } from "@react-three/drei/native";
 import type { OrbitControls as OrbitControlsImpl } from "three-stdlib";
@@ -31,6 +31,7 @@ export default function SolarSystem() {
   const [brightness, setBrightness] = useState(15); // State for brightness (now controls light intensity multiplier)
   // console.log(`SolarSystem Initial Mount - Brightness State: ${brightness}`); // Remove log
   const [timeScale, setTimeScale] = useState(0.1); // State for time scale factor
+  const [fov, setFov] = useState(50); // Add state for FOV
 
   const meshRefs = useRef<{ [key: string]: THREE.Mesh | null }>({});
   const orbitRefs = useRef<{ [key: string]: THREE.Group | null }>({});
@@ -94,6 +95,17 @@ export default function SolarSystem() {
   return (
     <View style={styles.container}>
       <Canvas
+        onWheel={(event) => {
+          // Adjust FOV based on wheel delta
+          const zoomSpeed = 0.05; // Adjust sensitivity
+          const delta = event.deltaY;
+          setFov((prevFov) => {
+            let newFov = prevFov + delta * zoomSpeed;
+            // Clamp FOV between reasonable limits (e.g., 10 and 120)
+            newFov = Math.max(10, Math.min(120, newFov));
+            return newFov;
+          });
+        }}
         shadows={{ type: THREE.PCFSoftShadowMap }} // Enable shadow map and set type
         gl={{
           antialias: true,
@@ -120,7 +132,7 @@ export default function SolarSystem() {
         {/* Camera */}
         <PerspectiveCamera
           makeDefault
-          fov={50}
+          fov={fov} // Use state for FOV
           near={0.2}
           far={10000}
           position={[0, 10, 25]}
@@ -145,7 +157,7 @@ export default function SolarSystem() {
         <OrbitControls
           ref={controlsRef}
           makeDefault
-          enableZoom={true}
+          enableZoom={false} // Disable default zoom
           enablePan={true}
           enableRotate={true}
           minDistance={0.1}

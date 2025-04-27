@@ -21,7 +21,7 @@ const OrbitalPath: React.FC<OrbitalPathProps> = ({
   distance, // Receive original distance
   // Remove scaleFactor from props
   segments = 128, // Default segments for a smooth circle
-  color = 0xaaaaaa, // Default color (light gray)
+  color = "#f8f8f8", // Default color (light gray hex)
   // inclination = 0, // Removed
 }) => {
   const points = useMemo(() => {
@@ -54,8 +54,16 @@ const OrbitalPath: React.FC<OrbitalPathProps> = ({
 
   const material = useMemo(() => {
     // Always use LineBasicMaterial for now
-    return new THREE.LineBasicMaterial({ color });
+    // Set color, opacity, and transparent explicitly for reliable transparency
+    const mat = new THREE.LineBasicMaterial({
+      color: new THREE.Color(color), // Use the color prop
+      opacity: 0.3, // Set desired opacity
+      transparent: true, // MUST be true for opacity to work
+      depthWrite: false, // Prevent transparent lines from interfering with depth buffer
+    });
+    return mat;
     // if (dashed) {
+    //   // If dashed lines are re-enabled, ensure opacity/transparent are set there too
     //   return new THREE.LineDashedMaterial({
     //     color,
     //     linewidth: 1, // Note: linewidth might not work on all platforms/drivers
@@ -66,7 +74,7 @@ const OrbitalPath: React.FC<OrbitalPathProps> = ({
     // } else {
     //   return new THREE.LineBasicMaterial({ color });
     // }
-  }, [color]); // Remove dashed dependency
+  }, [color]); // Dependency remains on color prop
 
   return useMemo(() => {
     // Ensure compatibility with React Native by creating the line object directly
