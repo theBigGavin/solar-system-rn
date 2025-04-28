@@ -2,6 +2,10 @@
 
 这是一个使用 React Native 和 Three.js (@react-three/fiber) 构建的太阳系模拟应用程序。它允许用户在移动设备或 Web 上探索太阳系的行星及其轨道。
 
+## 预览
+<img width="1680" alt="image" src="https://github.com/user-attachments/assets/ea8ffc4d-2c2f-46c6-ac58-8be01e304e9b" />
+https://thebiggavin.github.io/solar-system-rn/
+
 ## ✨ 特性
 
 - 基于 React Native 和 Expo 构建，支持 iOS、Android 和 Web 平台。
